@@ -26,6 +26,7 @@ public class Main {
     String graph = System.getenv("SPARQL_GRAPH");
     String user = System.getenv("SPARQL_USER");
     String password = System.getenv("SPARQL_PASSWORD");
+    String sparqlWherePart = System.getenv("SPARQL_WHERE");
 
     long batchSize = 50000;
     if (null != System.getenv("SPARQL_BATCHSIZE")) {
@@ -35,11 +36,11 @@ public class Main {
     long offset = 0;
     if (null != System.getenv("SPARQL_OFFSET")) {
       offset = new Long(System.getenv("SPARQL_OFFSET"));
-    }
+    }   
 
-    if (null == graph || null == sparqlEndpoint) {
-      logger.error("SPARQL_ENDPOINT and/or SPARQL_GRAPH ENV variable are not set");
-      throw new RuntimeException("SPARQL_ENDPOINT and/or SPARQL_GRAPH ENV variable are not set");
+    if ((null == graph && null==sparqlWherePart) || null == sparqlEndpoint) {
+      logger.error("SPARQL_ENDPOINT and/or SPARQL_GRAPH or SPARQL_WHERE ENV variable are not set");
+      throw new RuntimeException("SPARQL_ENDPOINT and/or SPARQL_GRAPH or SPARQL_WHERE ENV variable are not set");
     }
 
     File theDir = new File("dumps");
@@ -64,7 +65,7 @@ public class Main {
         try {
           String filename = "etms-" + offset + ".ttl";
           FileOutputStream stream = new FileOutputStream(new File(theDir.getPath(), filename));
-          RDFWriter writer = Rio.createWriter(RDFFormat.TURTLE, stream);
+          RDFWriter writer = Rio.createWriter(RDFFormat.NTRIPLES, stream);
           String query = "CONSTRUCT {?s ?p ?o}" +
               "WHERE { " +
               "GRAPH <" + applicationGraph.toString() + "> {" +
