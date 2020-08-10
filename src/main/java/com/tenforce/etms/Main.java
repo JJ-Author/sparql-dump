@@ -141,9 +141,9 @@ public class Main {
   public static void dumpWithCustomContructQuery(String sparqlEndpoint, String constructQuery, long batchSize, String fileName, File theDir) {
     QueryExecutionFactory qef = FluentQueryExecutionFactory.http(sparqlEndpoint)
             .config()
-            .withCache(new CacheBackendFile(new File("/tmp/cache/foo"), 60 * 60 * 1000 /* ms */)) // Das ist der letzte Wrapper in der Chain
+            .withCache(new CacheBackendFile(new File("/tmp/cache/foo2"), 60 * 60 * 1000 /* ms */)) // Das ist der letzte Wrapper in der Chain
             .withPagination((int) batchSize)
-            .withClientSideConstruct()
+            //.withClientSideConstruct()
             .withParser(SparqlQueryParserImpl.create()) // Der wrapper kommt zuerst
             .end()
             .create();

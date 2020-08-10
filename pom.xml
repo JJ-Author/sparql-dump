@@ -4,6 +4,13 @@
   <artifactId>sparql-dump</artifactId>
   <name>Sparql Dump</name>
   <groupId>com.tenforce.etms</groupId>
+  <repositories>
+    <repository>
+      <id>maven.aksw.snapshots</id>
+      <name>University Leipzig, AKSW Maven2 Repository</name>
+      <url>http://maven.aksw.org/archiva/repository/snapshots</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>org.openrdf.sesame</groupId>
@@ -38,7 +45,7 @@
     <dependency>
       <groupId>org.aksw.jena-sparql-api</groupId>
       <artifactId>jena-sparql-api-core</artifactId>
-      <version>3.14.0-1</version>
+      <version>3.15.0-1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
