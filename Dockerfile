@@ -5,4 +5,4 @@ COPY . /app
 WORKDIR /app
 RUN mvn clean package assembly:single
 ENTRYPOINT ["/bin/bash", "-c"]
-CMD ["/usr/bin/java -jar target/sparql-dump-*-with-dependencies.jar"]
+CMD [mvn exec:java -Dexec.mainClass="com.tenforce.etms.Main"]

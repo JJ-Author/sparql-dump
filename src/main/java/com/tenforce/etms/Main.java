@@ -6,6 +6,7 @@ import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
 import org.aksw.jena_sparql_api.rx.RDFDataMgrEx;
 import org.aksw.jena_sparql_api.rx.RDFDataMgrRx;
 import org.aksw.jena_sparql_api.stmt.SparqlQueryParserImpl;
+import org.aksw.jena_sparql_api.syntax.QueryGenerationUtils;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.riot.RDFDataMgr;
 import org.openrdf.model.URI;
@@ -143,6 +144,7 @@ public class Main {
             .config()
             .withCache(new CacheBackendFile(new File("/tmp/cache/foo2"), 60 * 60 * 1000 /* ms */)) // Das ist der letzte Wrapper in der Chain
             .withPagination((int) batchSize)
+            .withQueryTransform(QueryGenerationUtils::virtuosoFixForOrderedSlicing)
             //.withClientSideConstruct()
             .withParser(SparqlQueryParserImpl.create()) // Der wrapper kommt zuerst
             .end()
