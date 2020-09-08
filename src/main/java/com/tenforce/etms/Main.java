@@ -6,8 +6,12 @@ import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
 import org.aksw.jena_sparql_api.rx.RDFDataMgrEx;
 import org.aksw.jena_sparql_api.rx.RDFDataMgrRx;
 import org.aksw.jena_sparql_api.stmt.SparqlQueryParserImpl;
+import org.aksw.jena_sparql_api.stmt.SparqlStmt;
+import org.aksw.jena_sparql_api.stmt.SparqlStmtParserImpl;
+import org.aksw.jena_sparql_api.stmt.SparqlStmtUtils;
 import org.aksw.jena_sparql_api.syntax.QueryGenerationUtils;
 import org.apache.jena.graph.Triple;
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RDFDataMgr;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.ValueFactoryImpl;
@@ -28,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.function.Function;
 
 public class Main {
   public static void main(String[] args) throws RepositoryException, RDFHandlerException, FileNotFoundException {
@@ -149,7 +154,12 @@ public class Main {
             .withParser(SparqlQueryParserImpl.create()) // Der wrapper kommt zuerst
             .end()
             .create();
-    Iterator<Triple> rs = qef.createQueryExecution(constructQuery).execConstructTriples();
+    System.out.println(constructQuery);
+      Model prefixes = RDFDataMgr.loadModel("rdf-prefixes/prefix.cc.2019-12-17.ttl");
+      Function<String, SparqlStmt> parser = SparqlStmtParserImpl.create(prefixes);
+      SparqlStmt s = parser.apply(constructQuery);
+
+    Iterator<Triple> rs = qef.createQueryExecution(SparqlStmtUtils.optimizePrefixes(s).toString()).execConstructTriples();
     FileOutputStream stream = null;
     try {
       stream = new FileOutputStream(new File(theDir.getPath(), fileName+".nt"));
