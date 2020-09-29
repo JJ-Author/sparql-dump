@@ -117,7 +117,7 @@ public class Main {
 
           String query = "CONSTRUCT {?s ?p ?o}" +
               "WHERE { " +
-               sparqlWherePart +
+                  wherePart +
               "}" +
               " LIMIT " + batchSize + " OFFSET " + offset;
           con.prepareGraphQuery(
